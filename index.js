@@ -6,19 +6,22 @@
 /*******************************************************/
 // setup()
 /*******************************************************/
-function setup() {
-	console.log("setup:");
-	cnv = new Canvas(windowWidth,windowHeight);
-	// Dinosaur
-	spriteOne = new Sprite(200,500,200,100);
-	spriteOne.color = '#808000';
+
+function preload() {
+//image of dinosaur
+img = loadImage('../assets/dino.png');
 }
 
 
+function setup() {
 
-
-
-
+	console.log("setup:");
+	cnv = new Canvas(windowWidth,windowHeight);
+	// Dinosaur sprite
+	//dinoOne = new Sprite(200,500,200,100);
+	//dinoOne.color = '#808000';
+	dinoOne.bounciness = 1;
+}
 
 
 
