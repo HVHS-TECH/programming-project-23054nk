@@ -9,7 +9,7 @@
 
 function preload() {
 //image of dinosaur
-img = loadImage('../assets/dino.png');
+img = loadImage('../assets/images/dino.png');
 }
 
 
@@ -19,7 +19,8 @@ function setup() {
 	cnv = new Canvas(windowWidth,windowHeight);
 	// Dinosaur sprite
 	//dinoOne = new Sprite(200,500,200,100);
-	//dinoOne.color = '#808000';
+	dinoOne.image=(dino.png);
+	//dinoOne.color ='#808000';
 	dinoOne.bounciness = 1;
 }
 
