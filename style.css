@@ -8,6 +8,14 @@ body {
   background-color: #f0f0f0;
 }
 
+header {
+  text-align: center;
+  /*background-color: ;
+  font-family: ;
+  color: ; /*for the text*/
+  
+}
+
 .container {
   display: flex;
   gap: 20px;
@@ -20,12 +28,13 @@ body {
 }
 
 button {
+  
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
   border: none;
   border-radius: 5px;
-  background-color: #007bff;
+  background-color:#839b5d;
   color: #fff;
   transition: background-color 0.3s;
   width: 220px; /* Set a fixed width */
@@ -33,5 +42,5 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #505c3e;
 }

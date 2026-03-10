@@ -17,7 +17,7 @@ personOneSideImg = loadImage('assets/images/person1side.png');
 
 function setup() {
 	console.log("setup:");
-	cnv = new Canvas(windowWidth,windowHeight);
+	cnv = new Canvas(windowWidth -10,windowHeight -10);
 	world.gravity.y = 10;
 	ground = new Sprite(width/2, 900, width, 200, 'static') // 'static' ground does not move due to gravity
 	ground.color = '#839b5d';
