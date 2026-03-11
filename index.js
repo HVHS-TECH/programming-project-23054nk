@@ -52,6 +52,10 @@ function draw() {
 		personOneSprite.img = personOneFrontImg;
 	}
 
+	// making the dinosaur move right on its own
+	dinoOneSprite.vel.x = 2;
+
 }
 
 /*******************************************************/
+dinoOneSprite.collides(player, gameEnd)
