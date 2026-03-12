@@ -19,7 +19,7 @@ function setup() {
 	console.log("setup:");
 	cnv = new Canvas(windowWidth -10,windowHeight -10);
 	world.gravity.y = 10;
-	ground = new Sprite(width/2, 900, width, 200, 'static') // 'static' ground does not move due to gravity
+	ground = new Sprite(width/2, height - 50, width, 200, 'static') // 'static' ground does not move due to gravity
 	ground.color = '#839b5d';
 
 
@@ -34,6 +34,8 @@ function setup() {
 	personOneSprite.img = personOneFrontImg; 
 	personOneSprite.scale = 0.2;
 
+	playerHasMoved = false;
+
 }
 
 
@@ -45,6 +47,8 @@ function draw() {
 	if (kb.pressing('right')) {
 		personOneSprite.x+=5;
 		personOneSprite.img = personOneSideImg;
+
+		playerHasMoved = true; // personOneSprite has started moving
 	}
 
 	// if right arrow button isn't being pushed switch back to front view
@@ -52,10 +56,21 @@ function draw() {
 		personOneSprite.img = personOneFrontImg;
 	}
 
-	// making the dinosaur move right on its own
-	dinoOneSprite.vel.x = 2;
+	// Dinosaur only moves after the player (personOneSprite) starts moving
+	if (playerHasMoved) {
+		dinoOneSprite.vel.x = 5;
+	}
+	
 
+	// game ends when the dinosaur touches the player
+	if (dinoOneSprite.colliding(personOneSprite)) {
+		noLoop() //to stop the game 
+		textSize (60);
+		fill = ('red');
+		text ('game over', width/2-150, height/2);
+
+	}
 }
 
 /*******************************************************/
-dinoOneSprite.collides(player, gameEnd)
+//dinoOneSprite.collides(player, gameEnd)
