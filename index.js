@@ -60,13 +60,18 @@ function draw() {
 	if (playerHasMoved) {
 		dinoOneSprite.vel.x = 5;
 	}
+
+	// when up arrow is pressed and player is on the ground 
+	// (player only jumps when on the ground otherwise if the player presses the up arrow repeatedly then the sprite could jump too high)
+	if (kb.pressing('up') && personOneSprite.colliding(ground)) {
+		personOneSprite.vel.y =-8;
+	}
 	
 
 	// game ends when the dinosaur touches the player
 	if (dinoOneSprite.colliding(personOneSprite)) {
 		noLoop() //to stop the game 
 		textSize (60);
-		fill = ('red');
 		text ('game over', width/2-150, height/2);
 
 	}
