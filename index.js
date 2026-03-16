@@ -45,7 +45,7 @@ function draw() {
 
 	// if right arrow button pushed, move player right & switch sprite's image to the side view
 	if (kb.pressing('right')) {
-		personOneSprite.x+=5;
+		//personOneSprite.x+=5;
 		personOneSprite.img = personOneSideImg;
 
 		playerHasMoved = true; // personOneSprite has started moving
@@ -57,9 +57,9 @@ function draw() {
 	}
 
 	// Dinosaur only moves after the player (personOneSprite) starts moving
-	if (playerHasMoved) {
-		dinoOneSprite.vel.x = 5;
-	}
+	//if (playerHasMoved) {
+	//	dinoOneSprite.vel.x = 5;
+	//}
 
 	// when up arrow is pressed and player is on the ground 
 	// (player only jumps when on the ground otherwise if the player presses the up arrow repeatedly then the sprite could jump too high)
@@ -73,9 +73,8 @@ function draw() {
 		noLoop() //to stop the game 
 		textSize (60);
 		text ('game over', width/2-150, height/2);
-
+		
 	}
 }
 
 /*******************************************************/
-//dinoOneSprite.collides(player, gameEnd)
