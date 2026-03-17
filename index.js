@@ -30,7 +30,7 @@ function setup() {
 	
 	
 	// creating personOneSprite sprite and attaching image
-	personOneSprite = new Sprite(500,300,200,100);
+	personOneSprite = new Sprite(600,300,200,100);
 	personOneSprite.img = personOneFrontImg; 
 	personOneSprite.scale = 0.2;
 
@@ -45,7 +45,7 @@ function draw() {
 
 	// if right arrow button pushed, move player right & switch sprite's image to the side view
 	if (kb.pressing('right')) {
-		//personOneSprite.x+=5;
+		personOneSprite.x+=5;
 		personOneSprite.img = personOneSideImg;
 
 		playerHasMoved = true; // personOneSprite has started moving
@@ -57,9 +57,9 @@ function draw() {
 	}
 
 	// Dinosaur only moves after the player (personOneSprite) starts moving
-	//if (playerHasMoved) {
-	//	dinoOneSprite.vel.x = 5;
-	//}
+	if (playerHasMoved) {
+		dinoOneSprite.vel.x = 5;
+	}
 
 	// when up arrow is pressed and player is on the ground 
 	// (player only jumps when on the ground otherwise if the player presses the up arrow repeatedly then the sprite could jump too high)
@@ -67,14 +67,27 @@ function draw() {
 		personOneSprite.vel.y =-8;
 	}
 	
+	// kill player if they jump too close to dinosaur
+	
+
+	let d= dist(personOneSprite.x, personOneSprite.y, dinoOneSprite.x, dinoOneSprite.y);
+ console.log("d:", d);
+	if (!personOneSprite.colliding(ground) && d < 200) {
+	
+    noLoop();
+    textSize(60);
+    text('Too close to the dinosaur\nGame Over' , width/2 - 150, height/2);
+	}
+
 
 	// game ends when the dinosaur touches the player
 	if (dinoOneSprite.colliding(personOneSprite)) {
 		noLoop() //to stop the game 
 		textSize (60);
 		text ('game over', width/2-150, height/2);
-		
+
 	}
 }
 
 /*******************************************************/
+//dinoOneSprite.collides(player, gameEnd)
