@@ -44,22 +44,30 @@ function setup() {
 
 	playerHasMoved = false;
 
-	//creating the mudPatchSprite and attaching image
-    /*mudPatchSprite = new Sprite(800,100,100,100);
-    mudPatchSprite.img = mudPatchImg;
-    mudPatchSprite.scale = 0.2;*/
+    obstacleGroup = new Group();
 
+    //creating the mudPatchSprite and attaching image
+    mudPatchSprite = new Sprite(800, height - 150, 100, 100);
+    mudPatchSprite.img = mudPatchImg;
+    mudPatchSprite.scale = 0.4;
+    mudPatchSprite.collider = 'none'; // so sprite doesn't collide with ground
+    obstacleGroup.add(mudPatchSprite);
 
     //creating electricFenceSprite and attaching image
-    //electricFenceSprite = new Sprite(900,300,200,100);
-    //electricFenceSprite.img = electricFenceImg;
-    //electricFenceSprite.scale = 0.2;
-
+    electricFenceSprite = new Sprite(1100, height - 150, 200, 100);
+    electricFenceSprite.img = electricFenceImg;
+    electricFenceSprite.scale = 0.3;
+    electricFenceSprite.collider = 'none';
+    obstacleGroup.add(electricFenceSprite);
+  
 
     //creating rockSprite and attaching image
-    //rockSprite = new Sprite(1000,300,200,100);
-    //rockSprite.img = rockImg;
-    //rockSprite.scale = 0.2;  
+    rockSprite = new Sprite(1500, height - 150, 200, 100);
+    rockSprite.img = rockImg;
+    rockSprite.scale = 0.3; 
+    rockSprite.collider = 'none';
+    obstacleGroup.add(rockSprite); 
+    
 
 }
 
@@ -118,7 +126,18 @@ function draw() {
 
     }
 
-function drawFrame() {
+    
+
+    for (let obs of obstacleGroup) {
+    if (dinoOneSprite.overlapping(obs)) {
+        obs.remove();
+    }
+}
+
+
+    // mud patch 
+
+/*function drawFrame() {
 
 	camera.on();
 	player.draw();
@@ -128,8 +147,8 @@ function drawFrame() {
 	camera.off();
 
 
+}*/
+
 }
-
-
 /*******************************************************/
 //dinoOneSprite.collides(player, gameEnd);
