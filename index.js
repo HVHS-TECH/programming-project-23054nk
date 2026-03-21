@@ -11,24 +11,26 @@
 
 
 function preload() {
-//image of dinosaur
+//loading images before the game starts 
 dinoOneImage = loadImage('assets/images/dino.png');
 personOneFrontImg = loadImage('assets/images/person1front.png');
 personOneSideImg = loadImage('assets/images/person1side.png');
 mudPatchImg = loadImage('assets/images/mudPatch.png');
 electricFenceImg = loadImage('assets/images/electricFence.png');
 rockImg = loadImage('assets/images/rock.png');
-/*
-carImg=loadImage('assets/images/rock.png');
-deaddino=loadImage('assets/images/rock.png'); */
+jeepImg=loadImage('assets/images/pixelAbandonedJeep.png');
+
+// these obstacles haven't been passed yet
 electricFenceSprite.passed = false;
 rockSprite.passed = false;
-mudPatchSprite.passed = false;
+jeepSprite.passed = false;
+
 }
 
 
 
 function setup() {
+
     console.log("setup:");
     createCanvas(windowWidth -10,windowHeight -10);
     world.gravity.y = 10;
@@ -36,23 +38,26 @@ function setup() {
     ground.color = '#839b5d';
 
 
-    // creating dinoOne sprite and attaching image
+    // creating dinoOne sprite, attaching image.
+    // Dynamics: the sprite uses full physics (affected by gravity, can move, fall, collide with objects)
     dinoOneSprite = new Sprite(100, height - 150, 200, 100);
     dinoOneSprite.image = dinoOneImage;
     dinoOneSprite.scale = 0.2;
     dinoOneSprite.vel.x = 1; // slower speed
     dinoOneSprite.collider = 'dynamic';
    
-   
     // creating personOneSprite sprite and attaching image
     personOneSprite = new Sprite(300, height - 150, 200, 100);
     personOneSprite.image = personOneFrontImg;
     personOneSprite.scale = 0.2;
-    personOneSprite.vel.x = 4; // faster speed
+    personOneSprite.vel.x = 4; // faster than dino
     personOneSprite.collider = 'dynamic';
    
+    //boolean variable keeping track of wehter the player has moved or not 
+    // so the dinosaur does not start running until the player moves 
     playerHasMoved = false;
 
+    // a new group storing all obstacle sprites
     obstacleGroup = new Group();
 
     //creating electricFenceSprite and attaching image
@@ -60,10 +65,8 @@ function setup() {
     electricFenceSprite.image = electricFenceImg;
     electricFenceSprite.scale = 0.2;
     electricFenceSprite.collider = 'static';
-    obstacleGroup.add(electricFenceSprite);
+    obstacleGroup.add(electricFenceSprite); 
  
-
-
     //creating rockSprite and attaching image
     rockSprite = new Sprite(1500, height - 150, 200, 100);
     rockSprite.image = rockImg;
@@ -71,31 +74,37 @@ function setup() {
     rockSprite.collider = 'static';
     obstacleGroup.add(rockSprite);
    
-    //creating the mudPatchSprite and attaching image
+    /*//creating the mudPatchSprite and attaching image
     mudPatchSprite = new Sprite(2000, height - 150, 100, 100);
     mudPatchSprite.image = mudPatchImg;
     mudPatchSprite.scale = 0.2;
     mudPatchSprite.collider = 'static'; // so sprite doesn't collide with ground
-    obstacleGroup.add(mudPatchSprite);   
+    obstacleGroup.add(mudPatchSprite);   */
+
+    //creating abandoned jeep and attaching image 
+    jeepSprite = new Sprite(3000, height - 150, 200, 100);
+    jeepSprite.image = jeepImg;
+    jeepSprite.scale = 0.2;
+    jeepSprite.collider = 'static';
+    obstacleGroup.add(jeepSprite);
 
 }
 
 
 /*******************************************************/
-let score = 0;
+let score = 0; // declared outside of draw so score doesn't reset every frame
 function draw() 
 {
-   
-    // camera
-    //camera.on();
     background('#c8f2ff');
-    camera.x = personOneSprite.x + width /5;
-    camera.y = height / 2;
- 
+// camera only starts moving once the player moves past the center of the screen 
+    camera.x = max(width/2, personOneSprite.x);
+    camera.y = height/2;
+   
+
     // if right arrow button pushed, move player right & switch sprite's image to the side view
     if (kb.pressing('right'))   
     {
-        personOneSprite.x+=5;
+        personOneSprite.x+=5; 
         personOneSprite.image = personOneSideImg;
         playerHasMoved = true; // personOneSprite has started moving
     }
@@ -104,8 +113,8 @@ function draw()
         personOneSprite.image = personOneFrontImg;
     }
 
-   // when up arrow is pressed and player is on the ground
-    // (player only jumps when on the ground otherwise if the player presses the up arrow repeatedly then the sprite could jump too high)
+    // If up arrow and player is on the ground, then make the player jump
+    // this is so that if the user repeately pushes the arrow button then the player does not jump too high 
     if (kb.pressing('up') && personOneSprite.colliding(ground))
     {
         personOneSprite.vel.y =-8;
@@ -117,38 +126,31 @@ function draw()
         dinoOneSprite.vel.x = 5;
     }
 
-
-    // game ends if player jumps too close to dinosaur
+    // d becomes a number that represents the distance between the player and the dinosaur 
     let d= dist(personOneSprite.x, personOneSprite.y, dinoOneSprite.x, dinoOneSprite.y);
 
-    //console.log("d:", d); // checking what the value of d is
+    //console.log("d:", d); // checking what the value of d is2
 
     if (!personOneSprite.colliding(ground) && d < 200) 
     {
         noLoop();
         textSize(60);
         personOneSprite.remove(); // change with boom
-        text('Game over\nToo close to the dinosaur' , width/2 - 150, height/2); 
+        text('Game over\nToo close to the dinosaur\n Your score is:'+ score, width/2 - 150, height/2); 
 
     }
 
     // game ends when the dinosaur touches the player
-    if (dinoOneSprite.collides(personOneSprite)) 
-    {
-        noLoop() //to stop the game
-        textSize (60);
-        text ('game over', width/2-150, height/2);
 
-    }
    
     for (let obs of obstacleGroup) 
     {
-     if (dinoOneSprite.collides(obs))
+     /*if (dinoOneSprite.collides(obs))
         {
           obs.remove();
-        }
+        }*/
 
-    if (personOneSprite.collides(obs)) 
+     if (personOneSprite.collides(obs)) 
         {
         noLoop() //to stop the game
         personOneSprite.remove(); // change with boom
@@ -156,10 +158,28 @@ function draw()
         text ('game over\n Your score is:'+ score, width/2-150, height/2);
         }
 
-    if (!obs.passed && personOneSprite.x > obs.x) 
+     if (dinoOneSprite.collides(personOneSprite)) 
+        {
+        noLoop() //to stop the game
+        textSize (60);
+        text ('game over\n Your score is:'+ score, width/2-150, height/2);
+
+        }
+
+     if (personOneSprite.overlaps(obs)) 
+        {
+        noLoop() //to stop the game
+        //personOneSprite.remove(); // change with boom
+        textSize (60);
+        text ('game over\n Your score is:'+ score, width/2-150, height/2);
+        }
+
+
+
+     if (personOneSprite.x > obs.x) 
         {
         obs.passed = true;
-        
+        obs.remove()
         textSize (60);
         score=score+10;
         console.log (score);
