@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>game_end.html</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- stylesheets *******************************************-->
+<link rel="stylesheet" href="style.css">  
+
+<!-- intro page ***************************************-->
+
+
+</head>
+<body>
+<header>
+    <h1>
+        You Win!
+    </h1 style="color:white;>
+        Your final score is:
+    <h2 style="color:white; id="scoreText"></h2>
+     <!--Getting the saved score from index.js and putting the score in the header with the id "scoreText"-->
+    <script>
+        let finalScore = localStorage.getItem("finalScore")
+        document.getElementById("scoreText").textContent = finalScore; 
+    </script>
+
+     <button onclick="location.href='index.html'">Play again</button>
+</header>
+<body style="background-image: url('assets/images/Dinosaur victory sce.png');
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+  <!--js page *******************************************-->
+   <!--<script src="index.js"></script> -->
+  
+</body>
+</html>

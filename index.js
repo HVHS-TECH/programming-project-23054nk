@@ -19,12 +19,8 @@ mudPatchImg = loadImage('assets/images/mudPatch.png');
 electricFenceImg = loadImage('assets/images/electricFence.png');
 rockImg = loadImage('assets/images/rock.png');
 jeepImg=loadImage('assets/images/pixelAbandonedJeep.png');
-
-// these obstacles haven't been passed yet
-electricFenceSprite.passed = false;
-rockSprite.passed = false;
-jeepSprite.passed = false;
-
+ddinoImg=loadImage('assets/images/deaddino.png');
+finImg = loadImage('assets/images/Finishgate.png');
 }
 
 
@@ -34,7 +30,7 @@ function setup() {
     console.log("setup:");
     createCanvas(windowWidth -10,windowHeight -10);
     world.gravity.y = 10;
-    ground = new Sprite(2000, height - 50, 4000, 200, 'static'); // 'static' ground does not move due to gravity
+    ground = new Sprite(2000, height - 50, 15000, 200, 'static'); // 'static' ground does not move due to gravity
     ground.color = '#839b5d';
 
 
@@ -42,16 +38,18 @@ function setup() {
     // Dynamics: the sprite uses full physics (affected by gravity, can move, fall, collide with objects)
     dinoOneSprite = new Sprite(100, height - 150, 200, 100);
     dinoOneSprite.image = dinoOneImage;
-    dinoOneSprite.scale = 0.2;
-    dinoOneSprite.vel.x = 1; // slower speed
+    dinoOneSprite.scale = 0.3;
+    dinoOneSprite.vel.x = 2; // slower speed
     dinoOneSprite.collider = 'dynamic';
+    dinoOneSprite.rotationLock = true; // prevents spinning
    
-    // creating personOneSprite sprite and attaching image
-    personOneSprite = new Sprite(300, height - 150, 200, 100);
+    // creating personOneSprite sprite and attaching images
+    personOneSprite = new Sprite(500, height - 150, 60, 100);
     personOneSprite.image = personOneFrontImg;
     personOneSprite.scale = 0.2;
-    personOneSprite.vel.x = 4; // faster than dino
+    personOneSprite.vel.x = 5; // faster than dino
     personOneSprite.collider = 'dynamic';
+    personOneSprite.rotationLock = true; // prevents spinning
    
     //boolean variable keeping track of wehter the player has moved or not 
     // so the dinosaur does not start running until the player moves 
@@ -61,38 +59,60 @@ function setup() {
     obstacleGroup = new Group();
 
     //creating electricFenceSprite and attaching image
-    electricFenceSprite = new Sprite(900, height - 150, 200, 100);
+    electricFenceSprite = new Sprite(1500, height - 150, 200, 100);
     electricFenceSprite.image = electricFenceImg;
-    electricFenceSprite.scale = 0.2;
+    electricFenceSprite.scale = 0.25;
     electricFenceSprite.collider = 'static';
-    obstacleGroup.add(electricFenceSprite); 
+    obstacleGroup.add(electricFenceSprite);
+    electricFenceSprite.passed = false; 
  
     //creating rockSprite and attaching image
-    rockSprite = new Sprite(1500, height - 150, 200, 100);
+    rockSprite = new Sprite(2500, height - 150, 200, 100);
     rockSprite.image = rockImg;
-    rockSprite.scale = 0.2;
+    rockSprite.scale = 0.25;
     rockSprite.collider = 'static';
     obstacleGroup.add(rockSprite);
+    rockSprite.passed = false;
    
-    /*//creating the mudPatchSprite and attaching image
-    mudPatchSprite = new Sprite(2000, height - 150, 100, 100);
+    //creating the mudPatchSprite and attaching image
+    mudPatchSprite = new Sprite(3500, height - 100, 100, 100);
     mudPatchSprite.image = mudPatchImg;
-    mudPatchSprite.scale = 0.2;
+    mudPatchSprite.scale = 0.25;
     mudPatchSprite.collider = 'static'; // so sprite doesn't collide with ground
-    obstacleGroup.add(mudPatchSprite);   */
+    obstacleGroup.add(mudPatchSprite);   
+    mudPatchSprite.passed = false;
 
     //creating abandoned jeep and attaching image 
-    jeepSprite = new Sprite(3000, height - 150, 200, 100);
+    jeepSprite = new Sprite(4500, height - 150, 200, 100);
     jeepSprite.image = jeepImg;
-    jeepSprite.scale = 0.2;
+    jeepSprite.scale = 0.25;
     jeepSprite.collider = 'static';
     obstacleGroup.add(jeepSprite);
+    jeepSprite.passed = false;
+
+    //creating ddinoSprite and attaching image 
+    ddinoSprite = new Sprite(5500, height - 150, 200, 100);
+    ddinoSprite.image = ddinoImg;
+    ddinoSprite.scale = 0.25;
+    ddinoSprite.collider = 'static';
+    obstacleGroup.add(ddinoSprite);
+    ddinoSprite.passed = false;
+
+    //creating finSprite and attaching image 
+    finSprite = new Sprite(6500, height - 150, 200, 100);
+    finSprite.image = finImg;
+    finSprite.scale = 0.5;
+    finSprite.collider = 'static';
+    //obstacleGroup.add(finSprite);
+    finSprite.passed = false;
 
 }
 
 
 /*******************************************************/
 let score = 0; // declared outside of draw so score doesn't reset every frame
+let scorePopup = "";
+let scorePopupTimer = 0;
 function draw() 
 {
     background('#c8f2ff');
@@ -145,48 +165,74 @@ function draw()
    
     for (let obs of obstacleGroup) 
     {
-     /*if (dinoOneSprite.collides(obs))
-        {
-          obs.remove();
-        }*/
-
-     if (personOneSprite.collides(obs)) 
+        //  If player touches obstacle before passing → game over
+        
+        if (!obs.passed && personOneSprite.colliding(obs)) 
         {
         noLoop() //to stop the game
+        dinoOneSprite.remove();
         personOneSprite.remove(); // change with boom
         textSize (60);
-        text ('game over\n Your score is:'+ score, width/2-150, height/2);
+        text ('game over\n you collided with obstacle\n Your total score is:'+ score, width/3, height/3); //working direct hit
+        return;
         }
 
-     if (dinoOneSprite.collides(personOneSprite)) 
+
+        if (personOneSprite.collides(obs) && personOneSprite.x < obs.x+ obs.w/2) 
+        {text ('this is new:'+ score, width/3, height/3); }
+
+        if (!obs.passed && personOneSprite.x > obs.x+ obs.w/2) 
         {
-        noLoop() //to stop the game
-        textSize (60);
-        text ('game over\n Your score is:'+ score, width/2-150, height/2);
+        obs.passed = true;
+        score=score+10;   
+        //text 
+        scorePopup = "+10";
+        scorePopupTimer = 60;
+        }   
 
+        if (dinoOneSprite.collides(obs))
+        {
+          obs.remove();
         }
-
-     if (personOneSprite.overlaps(obs)) 
+        
+        /*if (personOneSprite.collides(obs)) 
         {
         noLoop() //to stop the game
         //personOneSprite.remove(); // change with boom
         textSize (60);
-        text ('game over\n Your score is:'+ score, width/2-150, height/2);
+        text ('game over\n you have hit an obstacle\n Your total score is:'+ score, width/3, height/3);
+        return;
+        }*/
+      
+
+        if (dinoOneSprite.collides(personOneSprite)) 
+        {
+        noLoop() //to stop the game
+        textSize (60);
+        text ('game over\n you have been hit by dino\n Your total score is:'+ score, width/3, height/3);
+
         }
 
-
-
-     if (personOneSprite.x > obs.x) 
+        if (scorePopupTimer > 0)
         {
-        obs.passed = true;
-        obs.remove()
-        textSize (60);
-        score=score+10;
-        console.log (score);
+        scorePopupTimer--;
+
+        textSize(40);
+        fill(0);
+        text(scorePopup, width/2-20, height/2-80);
         }
     }
 
-
+    if (personOneSprite.colliding(finSprite)) 
+        {
+        dinoOneSprite.remove();
+        //saving score so that user can see final score on ending page 
+        localStorage.setItem("finalScore", score);
+        window.location.href="game_end.html";
+        //textSize (60);
+        //text ('You Win \n Your final score is:'+ score, width/2-150, height/2);
+        window.location.href= "game_end.html";
+        }
 }
 /*******************************************************/
 //dinoOneSprite.collides(player, gameEnd);
