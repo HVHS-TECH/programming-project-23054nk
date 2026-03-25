@@ -55,11 +55,11 @@ function setup() {
     // so the dinosaur does not start running until the player moves 
     playerHasMoved = false;
 
-    // a new group storing all obstacle sprites
+    //a new group storing all obstacle sprites
     obstacleGroup = new Group();
 
     //creating electricFenceSprite and attaching image
-    electricFenceSprite = new Sprite(1500, height - 150, 200, 100);
+    electricFenceSprite = new Sprite(1500, height - 150, 300, 200);
     electricFenceSprite.image = electricFenceImg;
     electricFenceSprite.scale = 0.25;
     electricFenceSprite.collider = 'static';
@@ -202,7 +202,7 @@ if (personOneSprite.collides(obs))
         {
           obs.remove();
         }
-    /* if (obs.passed) {
+        /*if (obs.passed) {
         obs.remove();
         }*/
 
