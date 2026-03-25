@@ -70,17 +70,22 @@ function setup() {
     rockSprite = new Sprite(2500, height - 150, 200, 100);
     rockSprite.image = rockImg;
     rockSprite.scale = 0.25;
+    rockSprite.width = 120;
+    rockSprite.height = 60;
     rockSprite.collider = 'static';
     obstacleGroup.add(rockSprite);
     rockSprite.passed = false;
    
     //creating the mudPatchSprite and attaching image
-    mudPatchSprite = new Sprite(3500, height - 100, 100, 100);
+    mudPatchSprite = new Sprite(3500, height - 150, 100, 50);
     mudPatchSprite.image = mudPatchImg;
     mudPatchSprite.scale = 0.25;
+    mudPatchSprite.width = 120;  // slightly wider than player
+    mudPatchSprite.height = 60;
     mudPatchSprite.collider = 'static'; // so sprite doesn't collide with ground
     obstacleGroup.add(mudPatchSprite);   
     mudPatchSprite.passed = false;
+
 
     //creating abandoned jeep and attaching image 
     jeepSprite = new Sprite(4500, height - 150, 200, 100);
@@ -133,11 +138,18 @@ function draw()
         personOneSprite.image = personOneFrontImg;
     }
 
-    // If up arrow and player is on the ground, then make the player jump
-    // this is so that if the user repeately pushes the arrow button then the player does not jump too high 
-    if (kb.pressing('up') && personOneSprite.colliding(ground))
-    {
-        personOneSprite.vel.y =-8;
+    // -------- Jump Logic --------
+    let onGround = personOneSprite.colliding(ground);
+    let onObstacle = false;
+    for (let obs of obstacleGroup) {
+        if (personOneSprite.colliding(obs)) {
+            onObstacle = true;
+            break;
+        }
+    }
+    // Player can only jump if on ground and not on an obstacle
+    if (kb.pressing('up') && onGround && !onObstacle) {
+        personOneSprite.vel.y = -8;
     }
 
     // Dinosaur only moves after the player (personOneSprite) starts moving
@@ -151,12 +163,12 @@ function draw()
 
     //console.log("d:", d); // checking what the value of d is2
 
-    if (!personOneSprite.colliding(ground) && d < 200) 
+    if (!onGround && d < 150) 
     {
         noLoop();
-        textSize(60);
+        textSize(40);
         personOneSprite.remove(); // change with boom
-        text('Game over\nToo close to the dinosaur\n Your score is:'+ score, width/2 - 150, height/2); 
+        text('Game over\nToo close to the dinosaur\n Your score is:'+ score, width / 3, height / 3); 
 
     }
 
@@ -165,50 +177,40 @@ function draw()
    
     for (let obs of obstacleGroup) 
     {
-        //  If player touches obstacle before passing → game over
-        
-        if (!obs.passed && personOneSprite.colliding(obs)) 
-        {
-        noLoop() //to stop the game
-        dinoOneSprite.remove();
-        personOneSprite.remove(); // change with boom
-        textSize (60);
-        text ('game over\n you collided with obstacle\n Your total score is:'+ score, width/3, height/3); //working direct hit
-        return;
-        }
+if (personOneSprite.collides(obs)) 
+{
+    noLoop();
+    dinoOneSprite.vel.x = 0;
+    personOneSprite.vel.x = 0;
+    personOneSprite.vel.y = 0;
 
+    textSize(40);
 
-        if (personOneSprite.collides(obs) && personOneSprite.x < obs.x+ obs.w/2) 
-        {text ('this is new:'+ score, width/3, height/3); }
+    text('Game Over\nYou touched an obstacle\nScore: ' + score, width/3, height/3);
+    return;
+}
 
-        if (!obs.passed && personOneSprite.x > obs.x+ obs.w/2) 
+        if (!obs.passed && personOneSprite.x > obs.x+ obs.width/2+50) 
         {
         obs.passed = true;
         score=score+10;   
-        //text 
         scorePopup = "+10";
         scorePopupTimer = 60;
         }   
 
-        if (dinoOneSprite.collides(obs))
+       if (dinoOneSprite.collides(obs))
         {
           obs.remove();
         }
-        
-        /*if (personOneSprite.collides(obs)) 
-        {
-        noLoop() //to stop the game
-        //personOneSprite.remove(); // change with boom
-        textSize (60);
-        text ('game over\n you have hit an obstacle\n Your total score is:'+ score, width/3, height/3);
-        return;
+    /* if (obs.passed) {
+        obs.remove();
         }*/
-      
 
         if (dinoOneSprite.collides(personOneSprite)) 
         {
         noLoop() //to stop the game
-        textSize (60);
+        obs.remove()
+        textSize (40);
         text ('game over\n you have been hit by dino\n Your total score is:'+ score, width/3, height/3);
 
         }
@@ -216,22 +218,22 @@ function draw()
         if (scorePopupTimer > 0)
         {
         scorePopupTimer--;
-
         textSize(40);
         fill(0);
         text(scorePopup, width/2-20, height/2-80);
         }
     }
 
-    if (personOneSprite.colliding(finSprite)) 
+    if (personOneSprite.collides(finSprite)) 
         {
+            finSprite.passed = true;
         dinoOneSprite.remove();
         //saving score so that user can see final score on ending page 
         localStorage.setItem("finalScore", score);
         window.location.href="game_end.html";
-        //textSize (60);
+        //textSize (40);
         //text ('You Win \n Your final score is:'+ score, width/2-150, height/2);
-        window.location.href= "game_end.html";
+
         }
 }
 /*******************************************************/
