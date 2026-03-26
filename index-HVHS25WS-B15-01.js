@@ -55,7 +55,7 @@ function setup() {
     // so the dinosaur does not start running until the player moves 
     playerHasMoved = false;
 
-    // a new group storing all obstacle sprites
+    //a new group storing all obstacle sprites
     obstacleGroup = new Group();
 
     //creating electricFenceSprite and attaching image
@@ -63,14 +63,10 @@ function setup() {
     electricFenceSprite.image = electricFenceImg;
     electricFenceSprite.scale = 0.25;
     electricFenceSprite.collider = 'static';
+    electricFenceSprite.debug = true.
     obstacleGroup.add(electricFenceSprite);
     electricFenceSprite.passed = false; 
-
-   /* rectangleOne = new Sprite(1500, height - 150, 200, 100);
-	rectangleOne.color = '#808000';
-    //rectangleOne.scale = 0.80;
-    rectangleOne.collider = 'static';
-    rectangleOne.passed = false; */
+    
  
     //creating rockSprite and attaching image
     rockSprite = new Sprite(2500, height - 150, 200, 100);
@@ -79,6 +75,7 @@ function setup() {
     rockSprite.width = 120;
     rockSprite.height = 60;
     rockSprite.collider = 'static';
+    rockSprite.debug = true.
     obstacleGroup.add(rockSprite);
     rockSprite.passed = false;
    
@@ -89,6 +86,7 @@ function setup() {
     mudPatchSprite.width = 120;  // slightly wider than player
     mudPatchSprite.height = 60;
     mudPatchSprite.collider = 'static'; // so sprite doesn't collide with ground
+    mudPatchSprite.debug = true.
     obstacleGroup.add(mudPatchSprite);   
     mudPatchSprite.passed = false;
 
@@ -167,13 +165,13 @@ function draw()
     // d becomes a number that represents the distance between the player and the dinosaur 
     let d= dist(personOneSprite.x, personOneSprite.y, dinoOneSprite.x, dinoOneSprite.y);
 
-    //console.log("d:", d); // checking what the value of d is2
+    //console.log("d:", d); // checking what the value of d is
 
     if (!onGround && d < 150) 
     {
         noLoop();
         textSize(40);
-        personOneSprite.remove(); // change with boom
+        personOneSprite.remove();
         text('Game over\nToo close to the dinosaur\n Your score is:'+ score, width / 3, height / 3); 
 
     }
@@ -208,7 +206,7 @@ if (personOneSprite.collides(obs))
         {
           obs.remove();
         }
-    /* if (obs.passed) {
+        /*if (obs.passed) {
         obs.remove();
         }*/
 
