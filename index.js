@@ -36,9 +36,11 @@
 
         // creating dinoOne sprite, attaching image.
         // Dynamics: the sprite uses full physics (affected by gravity, can move, fall, collide with objects)
-        dinoOneSprite = new Sprite(100, height - 150, 200, 100);
+        dinoOneSprite = new Sprite(100, height-100,);//200
         dinoOneSprite.image = dinoOneImage;
-        dinoOneSprite.scale = 0.3;
+        dinoOneSprite.scale = 0.35;
+        dinoOneSprite.width = 300;  // slightly wider than player
+        dinoOneSprite.height = 200;
         dinoOneSprite.vel.x = 2; // slower speed
         dinoOneSprite.collider = 'dynamic';
         dinoOneSprite.debug = true;
@@ -47,7 +49,10 @@
         // creating personOneSprite sprite and attaching images
         personOneSprite = new Sprite(500, height - 150, 60, 100);
         personOneSprite.image = personOneFrontImg;
+        personOneSprite.layer = 10;
         personOneSprite.scale = 0.2;
+        personOneSprite.width = 90;  // slightly wider than player
+        personOneSprite.height = 60;
         personOneSprite.vel.x = 5; // faster than dino
         personOneSprite.collider = 'dynamic';
         personOneSprite.debug = true;
@@ -64,6 +69,8 @@
         electricFenceSprite = new Sprite(1500, height - 150, 300, 200);
         electricFenceSprite.image = electricFenceImg;
         electricFenceSprite.scale = 0.25;
+        electricFenceSprite.width = 150;  // slightly wider than player
+        electricFenceSprite.height = 60;
         electricFenceSprite.collider = 'static';
         electricFenceSprite.debug = true;
         obstacleGroup.add(electricFenceSprite);
@@ -90,7 +97,7 @@
         mudPatchSprite = new Sprite(3500, height - 150, 100, 50);
         mudPatchSprite.image = mudPatchImg;
         mudPatchSprite.scale = 0.25;
-        mudPatchSprite.width = 120;  // slightly wider than player
+        mudPatchSprite.width = 160;  
         mudPatchSprite.height = 60;
         mudPatchSprite.collider = 'static'; // so sprite doesn't collide with ground
         mudPatchSprite.debug = true;
@@ -102,6 +109,8 @@
         jeepSprite = new Sprite(4500, height - 150, 200, 100);
         jeepSprite.image = jeepImg;
         jeepSprite.scale = 0.25;
+        jeepSprite.width = 170;  
+        jeepSprite.height = 60;
         jeepSprite.collider = 'static';
         jeepSprite.debug = true;
         obstacleGroup.add(jeepSprite);
@@ -111,15 +120,22 @@
         ddinoSprite = new Sprite(5500, height - 150, 200, 100);
         ddinoSprite.image = ddinoImg;
         ddinoSprite.scale = 0.25;
+        ddinoSprite.width = 170;  
+        ddinoSprite.height = 60;
         ddinoSprite.collider = 'static';
+        ddinoSprite.debug = true;
         obstacleGroup.add(ddinoSprite);
         ddinoSprite.passed = false;
 
         //creating finSprite and attaching image 
         finSprite = new Sprite(6500, height - 150, 200, 100);
         finSprite.image = finImg;
+        finSprite.layer = 5;
         finSprite.scale = 0.5;
+        finSprite.width = 300;  
+        finSprite.height = 60;
         finSprite.collider = 'static';
+        finSprite.debug = true;
         finSprite.debug = true;
         //obstacleGroup.add(finSprite);
         finSprite.passed = false;
@@ -172,18 +188,18 @@
         }
 
         // d becomes a number that represents the distance between the player and the dinosaur 
-        let d= dist(personOneSprite.x, personOneSprite.y, dinoOneSprite.x, dinoOneSprite.y);
+     //   let d= dist(personOneSprite.x, personOneSprite.y, dinoOneSprite.x, dinoOneSprite.y);
 
         //console.log("d:", d); // checking what the value of d is2
 
-        if (!onGround && d < 150) 
+     /*   if (!onGround && d < 150) 
         {
             noLoop();
             textSize(40);
             personOneSprite.remove(); // change with boom
             text('Game over\nToo close to the dinosaur\n Your score is:'+ score, width / 3, height / 3); 
 
-        }
+        }*/
 
         // game ends when the dinosaur touches the player
 
