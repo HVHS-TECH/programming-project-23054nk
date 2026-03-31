@@ -1,5 +1,5 @@
     /******************************************************
-    Jurassic Run – Main Game File
+    Jurassic Chase – Main Game File
     Written by: Nityaa
 
     This program creates a side‑scrolling chase game using p5.js 
@@ -29,7 +29,8 @@ let jeepSprite, ddinoSprite, finSprite, ground;
     function preload() 
     {
         //loading images before the game starts 
-        dinoOneImage = loadImage('assets/images/dino.png');
+        // All images are made with the help of chatgpt
+        dinoOneImage = loadImage('assets/images/dino.png'); 
         personOneFrontImg = loadImage('assets/images/person1front.png');
         personOneSideImg = loadImage('assets/images/person1side.png');
         mudPatchImg = loadImage('assets/images/mudPatch.png');
@@ -141,12 +142,13 @@ let jeepSprite, ddinoSprite, finSprite, ground;
         ddinoSprite.passed = false;
 
         //creating finSprite and attaching image 
-        finSprite = new Sprite(6500, height - 150, 200, 100);
+        finSprite = new Sprite(6500, height - 150, 200, 200);
         finSprite.image = finImg;
         finSprite.layer = 5;
         finSprite.scale = 0.4;
         finSprite.width = 300;  
-        finSprite.height = 60;
+        finSprite.height = 900;
+        finImg.rotationLock = true; // keeping image upright 
         finSprite.collider = 'static';
         //finSprite.debug = true;
         finSprite.passed = false;
@@ -206,7 +208,7 @@ let jeepSprite, ddinoSprite, finSprite, ground;
             dinoOneSprite.vel.x = DINO_SPEED;
         }
 
-        // game ends when the dinosaur touches the player
+        // game ends when the dinosaur touches the player or player touches obstacles
 
     
         for (let obs of obstacleGroup) 
@@ -251,11 +253,7 @@ let jeepSprite, ddinoSprite, finSprite, ground;
         if (personOneSprite.collides(finSprite)) 
         {
             finSprite.passed = true;
-             dinoOneSprite.vel.x = 0;
-            //saving score so that user can see final score on ending page 
-            localStorage.setItem("finalScore", score);
-            localStorage.setItem("finalTime", gameTime.toFixed(2));
-            window.location.href="game_end.html";
+           endGame("You have won the game");
         }
     }
     /*******************************************************/
@@ -272,7 +270,15 @@ function endGame (message)
     localStorage.setItem("finalScore", score);
     localStorage.setItem("finalTime", gameTime.toFixed(2));
         // Pause for 2 seconds before redirecting
-    setTimeout(() => {  window.location.href = "game_paused.html";    }, 2000);
+
+        if (finSprite.passed == true)
+        {
+            setTimeout(() => {  window.location.href = "game_end.html";    }, 2000);
+        }
+        else {
+            setTimeout(() => {  window.location.href = "game_paused.html";    }, 2000);
+        }
+    
 
 }
 
