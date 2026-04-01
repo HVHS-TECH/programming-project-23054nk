@@ -60,10 +60,10 @@ let jeepSprite, ddinoSprite, finSprite, ground;
         dinoOneSprite.image = dinoOneImage;
         dinoOneSprite.scale = 0.27;
         dinoOneSprite.width = 300;  // slightly wider than player
-        dinoOneSprite.height = 600;
+        dinoOneSprite.height = 170;
         dinoOneSprite.vel.x = DINO_SPEED; // slower speed
         dinoOneSprite.collider = 'dynamic';
-        dinoOneSprite.debug = true;
+        //dinoOneSprite.debug = true;
         dinoOneSprite.rotationLock = true; // prevents spinning
     
         // creating personOneSprite sprite and attaching images
