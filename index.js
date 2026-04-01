@@ -29,16 +29,16 @@ let jeepSprite, ddinoSprite, finSprite, ground;
     function preload() 
     {
         //loading images before the game starts 
-        // All images are made with the help of chatgpt
-        dinoOneImage = loadImage('assets/images/dino.png'); 
+        // All images are made with the help of chatgpt and copilot
+        dinoOneImage = loadImage('assets/images/dino2.png'); 
         personOneFrontImg = loadImage('assets/images/person1front.png');
         personOneSideImg = loadImage('assets/images/person1side.png');
         mudPatchImg = loadImage('assets/images/mudPatch.png');
-        electricFenceImg = loadImage('assets/images/electricFence.png');
-        rockImg = loadImage('assets/images/rock.png');
-        jeepImg=loadImage('assets/images/pixelAbandonedJeep.png');
-        ddinoImg=loadImage('assets/images/deaddino.png');
-        finImg = loadImage('assets/images/Finishgate.png');
+        electricFenceImg = loadImage('assets/images/electricfence.png');
+        rockImg = loadImage('assets/images/rock1.png');
+        jeepImg=loadImage('assets/images/jeep2.png');
+        ddinoImg=loadImage('assets/images/ddino.png');
+        finImg = loadImage('assets/images/finline.png');
     }
 
 
@@ -56,14 +56,14 @@ let jeepSprite, ddinoSprite, finSprite, ground;
 
         // creating dinoOne sprite, attaching image.
         // Dynamics: the sprite uses full physics (affected by gravity, can move, fall, collide with objects)
-        dinoOneSprite = new Sprite(100, height-100,);//200
+        dinoOneSprite = new Sprite(100,height-100);
         dinoOneSprite.image = dinoOneImage;
-        dinoOneSprite.scale = 0.35;
+        dinoOneSprite.scale = 0.27;
         dinoOneSprite.width = 300;  // slightly wider than player
-        dinoOneSprite.height = 200;
+        dinoOneSprite.height = 600;
         dinoOneSprite.vel.x = DINO_SPEED; // slower speed
         dinoOneSprite.collider = 'dynamic';
-        //dinoOneSprite.debug = true;
+        dinoOneSprite.debug = true;
         dinoOneSprite.rotationLock = true; // prevents spinning
     
         // creating personOneSprite sprite and attaching images
@@ -122,7 +122,7 @@ let jeepSprite, ddinoSprite, finSprite, ground;
         //creating abandoned jeep and attaching image 
         jeepSprite = new Sprite(4500, height - 150, 200, 100);
         jeepSprite.image = jeepImg;
-        jeepSprite.scale = 0.25;
+        jeepSprite.scale = 0.36;
         jeepSprite.width = 170;  
         jeepSprite.height = 60;
         jeepSprite.collider = 'static';
@@ -133,9 +133,9 @@ let jeepSprite, ddinoSprite, finSprite, ground;
         //creating ddinoSprite and attaching image 
         ddinoSprite = new Sprite(5500, height - 150, 200, 100);
         ddinoSprite.image = ddinoImg;
-        ddinoSprite.scale = 0.25;
-        ddinoSprite.width = 170;  
-        ddinoSprite.height = 60;
+        ddinoSprite.scale = 0.29;
+        ddinoSprite.width = 250;  
+        ddinoSprite.height = 70;
         ddinoSprite.collider = 'static';
         //ddinoSprite.debug = true;
         obstacleGroup.add(ddinoSprite);
@@ -147,8 +147,8 @@ let jeepSprite, ddinoSprite, finSprite, ground;
         finSprite.layer = 5;
         finSprite.scale = 0.4;
         finSprite.width = 300;  
-        finSprite.height = 900;
-        finImg.rotationLock = true; // keeping image upright 
+        finSprite.height = 400;
+        finSprite.rotationLock = true; // keeping image upright 
         finSprite.collider = 'static';
         //finSprite.debug = true;
         finSprite.passed = false;
