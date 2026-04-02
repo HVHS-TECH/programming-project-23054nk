@@ -60,7 +60,11 @@ let jeepSprite, ddinoSprite, finSprite, ground;
         dinoOneSprite.image = dinoOneImage;
         dinoOneSprite.scale = 0.4;
         dinoOneSprite.width = 300;  // slightly wider than player
+<<<<<<< HEAD
         dinoOneSprite.height = 200;
+=======
+        dinoOneSprite.height = 170;
+>>>>>>> a3b1b45f824d28b47485da25b518cc45522785f2
         dinoOneSprite.vel.x = DINO_SPEED; // slower speed
         dinoOneSprite.collider = 'dynamic';
         //dinoOneSprite.debug = true;
